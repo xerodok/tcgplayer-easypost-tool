@@ -21,6 +21,8 @@
     "currency.js": "^2.0.4",
     "isbot": "^4.1.0",
     "json-2-csv": "^5.5.1",
+    "jspdf": "^4.1.0",
+    "jspdf-autotable": "^5.0.7",
     "react": "rc",
     "react-dom": "rc"
   },
