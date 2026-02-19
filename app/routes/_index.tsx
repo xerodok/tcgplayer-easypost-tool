@@ -38,6 +38,7 @@ import { useLocalStorageState } from "~/hooks/useLocalStorageState";
 import { TcgPlayerOrder, TcgPlayerShippingMethod } from "~/tcgplayer/types";
 import { Link as RemixLink } from "@remix-run/react";
 import { normalizeZipCode } from "~/utilities/normalizeZipCode";
+import { generatePullSheetPdf } from "~/utilities/generatePullSheetPdf";
 
 type ShipmentToOrderMap = {
   [reference: string]: string[];
@@ -550,6 +551,18 @@ export default function Index() {
     setShippingSettings(defaultShippingSettings);
   };
 
+  const handlePullSheetInput = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files![0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const csvText = e.target!.result as string;
+      generatePullSheetPdf(csvText);
+    };
+    reader.readAsText(file);
+  };
+
   return (
     <>
       <Container>
@@ -879,6 +892,18 @@ export default function Index() {
               variant="contained"
             >
               Download EasyPost Batch File(s)
+            </Button>
+          </Stack>
+          <Typography variant="h6">TCG Player Pull Sheet</Typography>
+          <Stack direction="row" spacing={2}>
+            <Button variant="contained" component="label">
+              Upload Pull Sheet &amp; Download PDF
+              <input
+                type="file"
+                accept=".csv"
+                hidden
+                onChange={handlePullSheetInput}
+              />
             </Button>
           </Stack>
         </Stack>
